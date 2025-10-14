@@ -1,0 +1,11 @@
+baseURL = "http://localhost:1313/"
+title = "The Living Room"
+languageCode = "en-us"
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 10
+
+[module]
+  [[module.imports]]
+    path = "github.com/gethinode/hinode"
