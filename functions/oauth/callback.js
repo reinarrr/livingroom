@@ -1,57 +1,33 @@
-async function exchangeCodeForToken(code, env) {
-  const params = new URLSearchParams();
-  params.set("client_id", env.GITHUB_CLIENT_ID);
-  params.set("client_secret", env.GITHUB_CLIENT_SECRET);
-  params.set("code", code);
-  params.set("redirect_uri", env.GITHUB_REDIRECT_URI);
-
-  const resp = await fetch("https://github.com/login/oauth/access_token", {
-    method: "POST",
-    headers: { "Accept": "application/json" },
-    body: params
+async function exchange(code, env) {
+  const body = new URLSearchParams({
+    client_id: env.GITHUB_CLIENT_ID,
+    client_secret: env.GITHUB_CLIENT_SECRET,
+    code,
+    redirect_uri: env.GITHUB_REDIRECT_URI,
   });
-  if (!resp.ok) {
-    throw new Error(`GitHub token exchange failed: ${resp.status}`);
-  }
-  return await resp.json(); // { access_token, token_type, scope }
+  const r = await fetch("https://github.com/login/oauth/access_token", {
+    method: "POST",
+    headers: { Accept: "application/json" },
+    body
+  });
+  if (!r.ok) throw new Error("token exchange failed: " + r.status);
+  return r.json(); // { access_token, ... }
 }
 
-function htmlCloseWithToken(token, origin) {
-  // Decap listens for postMessage({ token }) from the popup window
-  return `
-<!doctype html><html><body>
-<script>
-  (function(){
-    var t = ${JSON.stringify(token)};
-    var o = ${JSON.stringify(origin)};
-    if (window.opener) {
-      window.opener.postMessage({ token: t }, o);
-      window.close();
-    } else {
-      document.write("Authenticated. Please close this window.");
-    }
-  })();
-</script>
-</body></html>`;
+function htmlClose(token, origin) {
+  return `<!doctype html><meta charset=utf-8><body><script>
+    (function(){var t=${JSON.stringify(token)},o=${JSON.stringify(origin)};
+    if(window.opener){window.opener.postMessage({token:t},o);window.close();}
+    else{document.write("Authenticated. You can close this window.");}})();
+  </script>`;
 }
 
 export async function onRequest({ request, env }) {
-  const url = new URL(request.url);
-  const code = url.searchParams.get("code");
+  const code = new URL(request.url).searchParams.get("code");
   if (!code) return new Response("Missing code", { status: 400 });
-
-  // Limit who can receive the token via postMessage
-  const allowedOrigin = env.ALLOWED_ORIGIN; // e.g., https://tlr.pages.dev
-
-  try {
-    const data = await exchangeCodeForToken(code, env);
-    const token = data.access_token;
-    if (!token) throw new Error("No access_token in response");
-
-    return new Response(htmlCloseWithToken(token, allowedOrigin), {
-      headers: { "Content-Type": "text/html; charset=utf-8" }
-    });
-  } catch (e) {
-    return new Response(`OAuth error: ${e.message}`, { status: 500 });
-  }
+  const data = await exchange(code, env);
+  const origin = env.ALLOWED_ORIGIN; // e.g. https://tlr.pages.dev
+  return new Response(htmlClose(data.access_token, origin), {
+    headers: { "Content-Type": "text/html; charset=utf-8" }
+  });
 }
