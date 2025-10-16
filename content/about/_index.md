@@ -19,22 +19,13 @@ For you are a chosen people. You are royal priests, a holy nation, God’s very 
 
 ## Inside The Living Room
 
-{{< columns >}}
-
-##### Intimate Gatherings
-
-We focus on smaller, more intimate gatherings in homes or online. It’s flexible and responsive to the needs of each community, allowing us to tailor how we worship and connect based on where we are and who we’re with.
-
-##### Together in Faith
-
-Our Sunday services, called ‘Sundays! in The Living Room,’ are available online, and many of our members gather in homes to watch together or participate in worship and study.
-<--->
-
-##### Authentic Connections
-
-We gather in-person in homes, in Living Spaces, and online. We meet for worship, Bible study, prayer, and discussions. Each gathering is unique and reflects the needs and culture of their community.
-
-##### Supergroups
-
-Supergroups are the heart of connection at The Living Room. These small, intentional groups meet regularly to foster deeper relationships, encourage spiritual growth, and provide a space for open, honest conversations about faith and life. 
-{{< /columns >}}
+<div class="row g-4">
+  <div class="col-md-6">
+    ### Left column
+    Your left content here.
+  </div>
+  <div class="col-md-6">
+    ### Right column
+    Your right content here.
+  </div>
+</div>
