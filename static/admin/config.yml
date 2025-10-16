@@ -2,8 +2,8 @@ backend:
   name: github
   repo: reinarrr/livingroom
   branch: main
-  base_url: /oauth      # relative to the same origin
-  auth_endpoint: auth   # -> /oauth/auth (callback handled at /oauth/callback)
+  base_url: /oauth
+  auth_endpoint: auth
 
 media_folder: "static/uploads"
 public_folder: "/uploads"
@@ -18,7 +18,6 @@ collections:
         fields:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Body",  name: "body",  widget: "markdown" }
-
       - file: "content/about/_index.md"
         label: "About"
         name: "about"
