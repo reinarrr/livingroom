@@ -9,3 +9,17 @@ enableRobotsTXT = true
 [module]
   [[module.imports]]
     path = "github.com/gethinode/hinode"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url  = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Posts"
+    url  = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "About"
+    url  = "/about/"
+    weight = 3

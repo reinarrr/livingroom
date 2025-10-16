@@ -1,4 +1,4 @@
 ---
 title: "Welcome"
 ---
-Hello from Hinode!
+Hello from **Hinode**! 🎉

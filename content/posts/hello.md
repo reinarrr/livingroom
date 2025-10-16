@@ -1,6 +1,6 @@
 ---
 title: "Hello"
-date: 2025-10-15
+date: 2025-10-16
 draft: false
 ---
-First Hinode post. 🎉
+First post using Hinode. If you can read this, the site is working.
